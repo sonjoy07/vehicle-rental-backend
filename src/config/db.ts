@@ -1,10 +1,19 @@
-import dotenv from 'dotenv'
-dotenv.config();
+import knex from 'knex';
+import { env } from './env';
 
-function required(key: string): string {
-    const val = process.env[key];
-    if (!val) {
-        throw new Error(`Missing env var: ${key}`)
+const db = knex({
+    client: env.db.client,
+    connection: {
+        host: env.db.host,
+        port: Number(env.db.port),
+        user: env.db.user,
+        password: env.db.password,
+        database: env.db.name,
+    },
+
+    pool: {
+        min: Number(env.db.poolMin),
+        max: Number(env.db.poolMax)
     }
-    return val;
-}
+})
+export default db;
