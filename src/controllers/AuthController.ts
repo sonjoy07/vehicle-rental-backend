@@ -7,6 +7,7 @@ const authService = new AuthService()
 export const login = asyncHandler(async (req: Request, res: Response) => {
     try {
         const result = await authService.login(req.body)
+        // console.log('result',result)
         res.status(200).json(result);
     } catch (err) {
         res.status(401).json({ error: 'Invalid credintials' })

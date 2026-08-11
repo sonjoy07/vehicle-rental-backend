@@ -9,7 +9,7 @@ export class AuthService {
     private staffDAO = new StaffDAO();
 
     async login(payload: LoginDto): Promise<LoginResponse> {
-        const staff = await this.staffDAO.create(payload);
+        const staff = await this.staffDAO.getDataByEmail(payload.email);
         if (!staff) throw new AppError('Invalid Email or password', 401)
 
         const isMatch = await comparePassword(payload.password, staff.password_hash);
