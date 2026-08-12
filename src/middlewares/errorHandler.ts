@@ -1,10 +1,10 @@
-import { NextFunction, Request, Response } from "express";
-import { AppError } from "../utils/AppError";
+import { Request, Response } from 'express';
+import { AppError } from '../utils/AppError';
 
-export function errorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
-    if (err instanceof AppError) {
-        return res.status(err.statusCode).json({ error: err.message })
-    }
-    console.error(err);
-    return res.status(500).json({ error: 'something went wrong' })
+export function errorHandler(err: Error, req: Request, res: Response) {
+  if (err instanceof AppError) {
+    return res.status(err.statusCode).json({ error: err.message });
+  }
+  console.error(err);
+  return res.status(500).json({ error: `something went wrong ${err}` });
 }
