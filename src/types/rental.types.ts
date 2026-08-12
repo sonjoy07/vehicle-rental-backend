@@ -43,3 +43,12 @@ export interface PaginatedResult<T> {
   page: number;
   limit: number;
 }
+
+export interface RentalListQuery {
+  page?: string;
+  limit?: string;
+  vehicle_id?: string;
+  status?: RentalStatus;
+  from?: string;
+  to?: string;
+}

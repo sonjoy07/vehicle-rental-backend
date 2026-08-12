@@ -3,11 +3,21 @@ import { asyncHandler } from '../utils/asyncHandler';
 import { ReportService } from '../services/ReportService';
 import { AppError } from '../utils/AppError';
 import { MonthlyReportResponse } from '../types/report.types';
+import { Params } from '../types/common.types';
 
 const reportService = new ReportService();
 
+interface ReportQuery {
+  month?: string;
+  vehicle_id?: string;
+}
+
 export const getRentalReport = asyncHandler(
-  async (req: Request, res: Response<MonthlyReportResponse>, next: NextFunction) => {
+  async (
+    req: Request<Params, MonthlyReportResponse, any, ReportQuery>,
+    res: Response<MonthlyReportResponse>,
+    next: NextFunction,
+  ) => {
     try {
       const { month, vehicle_id } = req.query;
       if (!month || typeof month !== 'string') {

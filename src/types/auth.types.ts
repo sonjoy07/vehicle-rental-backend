@@ -15,6 +15,8 @@ export interface LoginDto {
 export interface JwtPayload {
   id: number;
   email: string;
+  iat?: number;
+  exp?: number;
 }
 
 export interface LoginResponse {

@@ -36,3 +36,10 @@ export interface PaginatedResult<T> {
   page: number;
   limit: number;
 }
+
+export interface VehicleListQuery {
+  page?: string;
+  limit?: string;
+  category?: string;
+  search?: string;
+}
