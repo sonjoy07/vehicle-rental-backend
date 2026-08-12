@@ -1,6 +1,6 @@
-import type { Knex } from "knex";
+import type { Knex } from 'knex';
 
-const tableName = 'rentals'
+const tableName = 'rentals';
 export async function up(knex: Knex): Promise<void> {
     await knex.schema.createTable(tableName, (table) => {
         table.increments('id').primary;

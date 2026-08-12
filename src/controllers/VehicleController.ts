@@ -42,5 +42,5 @@ export const updateVehicle = asyncHandler(async (req: Request, res: Response) =>
 })
 export const deleteVehicle = asyncHandler(async (req: Request, res: Response) => {
     await vehicleService.remove(Number(req.params.id))
-    res.status(204).send('deleted');
+    res.status(200).json({ message: 'Vehicle deleted successfully' });
 })
