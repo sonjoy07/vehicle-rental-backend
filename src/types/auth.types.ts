@@ -20,7 +20,7 @@ export interface JwtPayload {
 export interface LoginResponse {
   token: string;
   staff: {
-    id: string;
+    id: number;
     email: string;
     name: string;
   };

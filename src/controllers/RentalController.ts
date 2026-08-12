@@ -1,42 +1,50 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { asyncHandler } from '../utils/asyncHandler';
 import { RentalService } from '../services/RentalService';
+import { Rental } from '../types/rental.types';
+import { PaginatedResult } from '../types/vehicle.types';
+
+interface MessageResponse {
+  message: string;
+}
 
 const rentalService = new RentalService();
 
-export const listRentals = asyncHandler(async (req: Request, res: Response) => {
-  try {
-    const { page, limit, vehicle_id, status, from, to } = req.query;
-    const result = await rentalService.list({
-      page: page ? Number(page) : undefined,
-      limit: page ? Number(limit) : undefined,
-      vehicle_id: vehicle_id ? Number(vehicle_id) : undefined,
-      status: status as any,
-      from: from as string,
-      to: to as string,
-    });
-    // console.log('result',result)
-    res.status(200).json(result);
-  } catch (err) {
-    res.status(401).json({ error: `Invalid data ${err}` });
-  }
-});
+export const listRentals = asyncHandler(
+  async (req: Request, res: Response<PaginatedResult<Rental>>, next: NextFunction) => {
+    try {
+      const { page, limit, vehicle_id, status, from, to } = req.query;
+      const result = await rentalService.list({
+        page: page ? Number(page) : undefined,
+        limit: page ? Number(limit) : undefined,
+        vehicle_id: vehicle_id ? Number(vehicle_id) : undefined,
+        status: status as any,
+        from: from as string,
+        to: to as string,
+      });
+      // console.log('result',result)
+      res.status(200).json(result);
+    } catch (err) {
+      next(err);
+    }
+  },
+);
 
-export const getRental = asyncHandler(async (req: Request, res: Response) => {
+export const getRental = asyncHandler(async (req: Request, res: Response<Rental>) => {
   const rental = await rentalService.getbyId(Number(req.params.id));
   res.status(200).json(rental);
 });
 
-export const createRental = asyncHandler(async (req: Request, res: Response) => {
+export const createRental = asyncHandler(async (req: Request, res: Response<Rental>) => {
   const rental = await rentalService.create(req.body);
   res.status(201).json(rental);
 });
-export const updateRental = asyncHandler(async (req: Request, res: Response) => {
+export const updateRental = asyncHandler(async (req: Request, res: Response<Rental>) => {
   const rental = await rentalService.update(Number(req.params.id), req.body);
 
   res.status(200).json(rental);
 });
-export const deleteRental = asyncHandler(async (req: Request, res: Response) => {
+export const deleteRental = asyncHandler(async (req: Request, res: Response<MessageResponse>) => {
   await rentalService.remove(Number(req.params.id));
   res.status(200).json({ message: 'Rental deleted successfully' });
 });
