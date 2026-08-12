@@ -25,7 +25,7 @@ export class RentalDAO extends BaseDAO<Rental> {
   }
   async getAllActiveRental(filter: RentalFilters): Promise<{ data: Rental[]; total: number }> {
     const { page = 1, limit = 10, vehicle_id, status, from, to } = filter;
-    const baseQuery = this.db(this.tableName).whereNull('deleted_at');
+    const baseQuery = this.db(this.tableName);
 
     if (vehicle_id) baseQuery.andWhere('vehicle_id', vehicle_id);
     if (status) baseQuery.andWhere('status', status);
